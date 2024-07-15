@@ -1,44 +1,47 @@
 import Modal from "react-modal";
-import { Images } from "../types";
+import css from "./ImageModal.module.css";
 
-const customStyles: Modal.Styles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-  },
-};
+Modal.setAppElement("#root");
+
 interface ImageModalProps {
-  onCloseModal: () => void;
-  isOpen: boolean;
-  modalImg: Images | null;
+  closeModal: () => void;
+  modalIsOpen: boolean;
+  imageSrc?: string;
+  imageAltDescription?: string;
+  imageAutor?: string;
+  imageLikes?: number;
 }
-const ImageModal: React.FC<ImageModalProps> = ({
-  modalImg,
-  isOpen,
-  onCloseModal,
-}) => {
+
+const ImageModal = ({
+  closeModal,
+  modalIsOpen,
+  imageSrc = "https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg",
+  imageAltDescription = "Regular gallery image",
+  imageAutor = "Unknown",
+  imageLikes = 0,
+}: ImageModalProps) => {
   return (
-    <div>
-      <Modal
-        style={customStyles}
-        isOpen={isOpen}
-        onRequestClose={onCloseModal}
-        ariaHideApp={false}
-      >
-        {modalImg && (
-          <img
-            src={modalImg.urls.regular}
-            alt={modalImg.alt_description}
-            width={800}
-            height={600}
-          />
-        )}
-      </Modal>
-    </div>
+    <Modal
+      isOpen={modalIsOpen}
+      onRequestClose={closeModal}
+      className={css.Modal}
+      overlayClassName={css.Overlay}
+    >
+      {" "}
+      <div className={css.modalContainer}>
+        <div className={css.imageContainer}>
+          <img className={css.image} src={imageSrc} alt={imageAltDescription} />
+        </div>
+        <div className={css.imageInfo}>
+          <p className={css.imageDescr}>
+            Author: <span className={css.imageSpan}>{imageAutor}</span>
+          </p>
+          <p className={css.imageDescr}>
+            Likes: <span className={css.imageSpan}>{imageLikes}</span>
+          </p>
+        </div>
+      </div>
+    </Modal>
   );
 };
 

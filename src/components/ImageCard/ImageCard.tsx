@@ -1,33 +1,36 @@
-import { FC } from "react";
-import { Images, User } from "../types";
+import { ImageType, ModalDataType } from "../../types";
 import css from "./ImageCard.module.css";
 
 interface ImageCardProps {
-  image: Images;
-  openModal: (id: string) => void;
-  user: User;
+  onImageClick: (image: ModalDataType) => void;
+  image: ImageType;
 }
+const ImageCard = ({ image, onImageClick }: ImageCardProps) => {
+  const imageData = {
+    imageSrc: image.urls.regular,
+    imageAltDescription: image.alt_description,
+    imageDescription: image.description,
+    imageAutor: image.user.name,
+    imageLikes: image.likes,
+  };
 
-const ImageCard: FC<ImageCardProps> = ({ image, openModal, user }) => {
   return (
-    <li className={css.listItem}>
-      <div className={css.imgItem}>
-        <img
-          onClick={() => openModal(image.id)}
-          src={image.urls.small}
-          width={300}
-          alt={image.alt_description}
-        />
-      </div>
-      <div className={css.imageInfo}>
-        <p className={css.textInfo}>
-          Author: <span>{user.name}</span>
+    <div className={css.imageCard} onClick={() => onImageClick(imageData)}>
+      <img
+        src={image.urls.small}
+        alt={image.alt_description}
+        width={310}
+        height={200}
+      />
+      <div className={css.imageDescrWrap}>
+        <p className={css.imageDescr}>
+          Author: <span className={css.imageSpan}>{image.user.name}</span>
         </p>
-        <p className={css.textInfo}>
-          Location: <span>{user.location}</span>
+        <p className={css.imageDescr}>
+          Likes: <span className={css.imageSpan}>{image.likes}</span>
         </p>
       </div>
-    </li>
+    </div>
   );
 };
 

@@ -1,13 +1,19 @@
+import css from "./LoadMoreBtn.module.css";
+
 interface LoadMoreBtnProps {
-    onAddPage: () => void;
-  }
-  
-  const LoadMoreBtn = ({ onAddPage }: LoadMoreBtnProps) => {
-    return (
-      <>
-        <button onClick={onAddPage}>Load more</button>
-      </>
-    );
-  };
-  
-  export default LoadMoreBtn;
+  onLoadMore: () => void;
+}
+
+const LoadMoreBtn = ({ onLoadMore }: LoadMoreBtnProps) => {
+  return (
+    <button
+      className={css.loadMoreBtn}
+      onClick={() => onLoadMore()}
+      type="button"
+    >
+      Load More...
+    </button>
+  );
+};
+
+export default LoadMoreBtn;

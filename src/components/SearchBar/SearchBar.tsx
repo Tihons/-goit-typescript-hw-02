@@ -1,54 +1,49 @@
-import { IoIosSearch } from "react-icons/io";
+import { Formik, Form, Field } from "formik";
+import toast, { Toaster } from "react-hot-toast";
+import { BiSearchAlt } from "react-icons/bi";
 import css from "./SearchBar.module.css";
-import toast from "react-hot-toast";
-import { FormEvent, useState } from "react";
 
 interface SearchBarProps {
-  onSubmit: (searchQuery: string) => void;
+  onSearch: (query: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!searchQuery.trim()) {
-      toast.error("Please enter a search query");
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+  const initialValues = {
+    query: "",
+  };
+  const handleSubmit = (
+    values: { query: string },
+    { resetForm }: { resetForm: () => void }
+  ) => {
+    if (!values.query) {
+      toast("Please enter your search!", {
+        position: "top-right",
+      });
       return;
     }
-    onSubmit(searchQuery);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
+    onSearch(values.query);
+    resetForm();
   };
 
   return (
-    <>
-      <header className={css.searchHeader}>
-        <>
-          <form className={css.searchForm} onSubmit={handleSubmit}>
-            <div className={css.searchContainer}>
-              <button type="submit" className={css.btnForm}>
-                <IoIosSearch className={css.searchIcon} />
-              </button>
-
-              <input
-                className={css.searchInput}
-                type="text"
-                name="searchQuery"
-                autoComplete="off"
-                autoFocus
-                placeholder="Search images and photos"
-                value={searchQuery}
-                onChange={handleInputChange}
-              />
-            </div>
-          </form>
-        </>
+    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+      <header className={css.header}>
+        <Form className={css.headerForm}>
+          <button className={css.headerFormBtn} type="submit">
+            <BiSearchAlt className={css.formSvg} />
+          </button>
+          <Field
+            className={css.headerInput}
+            type="text"
+            name="query"
+            autoComplete="off"
+            autoFocus
+            placeholder="Search images and photos..."
+          />
+        </Form>
+        <Toaster />
       </header>
-    </>
+    </Formik>
   );
 };
 

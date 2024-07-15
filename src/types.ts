@@ -1,31 +1,11 @@
-export interface OpModal {
-    openModal: (img: string) => void;
-  }
-  export interface Images {
-    id: string;
-    alt_description: string;
-    likes: number;
-    urls: {
-      small: string;
-      regular: string;
-    };
-    user: {
-      name: string;
-    };
-  }
-  
-  export interface User {
-    name: string;
-    location?: string;
-  }
-  
-  export type ModalDataType = {
+export type ModalDataType = {
     imageSrc: string;
     imageAltDescription?: string;
     imageDescription?: string;
     imageAuthor?: string;
     imageLikes?: number;
   };
+  
   export type ImageType = {
     id: string;
     description?: string;
@@ -39,6 +19,15 @@ export interface OpModal {
     };
     likes: number;
   };
+  
+  export type requestDataType = {
+    client_id: string;
+    query: string;
+    page: number;
+    per_page: number;
+    orientation: string;
+  };
+  
   export type responseDataType = {
     total: number;
     total_pages: number;

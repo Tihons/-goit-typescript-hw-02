@@ -1,22 +1,29 @@
-import axios, { AxiosInstance } from "axios";
-import { Images } from "../components/types";
+import axios, { AxiosResponse } from "axios";
+import { requestDataType, responseDataType } from "../types";
 
-const ACCES_KEY = "5I5eWCNfuzZ2TJ-M0l48OYAoe5_Ak-5XVimfs-x7hTU";
+axios.defaults.baseURL = "https://api.unsplash.com";
+const ACCESS_KEY: string = "fhk85qoOsehbeckGzajzOswz9IbUvVrK7NkOVv2kS-8";
 
+const searchParms: requestDataType = {
+  client_id: ACCESS_KEY,
+  query: "",
+  page: 1,
+  per_page: 20,
+  orientation: "landscape",
+};
 
-interface UnsplashResponse {
-  results: [Images];
-  total_pages: number;
-
-  data: string;
-}
-
-export const requestImages = async (
-  query: string,
-  page: number
-): Promise<UnsplashResponse> => {
-  const { data } = await axios.get<UnsplashResponse>(
-    `https://api.unsplash.com/search/photos/?client_id=${ACCES_KEY}&page=${page}&query=${query}&per_page=20`
+const requestImagesByQuery = async (query: string, page: number) => {
+  const { data }: AxiosResponse<responseDataType> = await axios.get(
+    "/search/photos",
+    {
+      params: {
+        ...searchParms,
+        page,
+        query,
+      },
+    }
   );
   return data;
 };
+
+export default requestImagesByQuery;
